@@ -29,4 +29,19 @@ contract QuestionMarkGameTest is Test {
             numberUsed[pi] = true;
         }
     }
+
+    function testNumberToCard() public view {
+        for (uint256 i = 0; i < numCards; i++) {
+            console2.log('card # ', i);
+            uint256[4] memory card = game.numberToCard(i);
+            console2.log(card[0], card[1], card[2], card[3]);
+        }
+    }
+
+    function testNumberToCardToNumber(uint number) public view {
+        number = bound(number, 0, numCards-1);
+        uint256[4] memory card = game.numberToCard(number);
+        uint number2 = game.cardToNumber(card);
+        assert(number == number2);
+    }
 }
