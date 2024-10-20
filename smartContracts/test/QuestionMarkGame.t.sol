@@ -13,25 +13,25 @@ contract QuestionMarkGameTest is Test {
 
     function testPrint() public view {
         uint256 seed = 3;
-        uint256[numCards] memory permutation = game.generatePermutation(numCards, seed);
-        for (uint256 i = 0; i < numCards; i++) {
+        uint256[NUM_CARDS] memory permutation = game.generatePermutation(NUM_CARDS, seed);
+        for (uint256 i = 0; i < NUM_CARDS; i++) {
             console2.log(permutation[i]);
         }
     }
 
     function testGeneratePermutation(uint256 seed) public view {
-        uint256[numCards] memory permutation = game.generatePermutation(numCards, seed);
-        bool[numCards] memory numberUsed;
-        for (uint256 i = 0; i < numCards; i++) {
+        uint256[NUM_CARDS] memory permutation = game.generatePermutation(NUM_CARDS, seed);
+        bool[NUM_CARDS] memory numberUsed;
+        for (uint256 i = 0; i < NUM_CARDS; i++) {
             uint pi = permutation[i];
-            assert(pi < numCards);
+            assert(pi < NUM_CARDS);
             if (numberUsed[pi]) assert(false);
             numberUsed[pi] = true;
         }
     }
 
     function testNumberToCard() public view {
-        for (uint256 i = 0; i < numCards; i++) {
+        for (uint256 i = 0; i < NUM_CARDS; i++) {
             console2.log('card # ', i);
             uint256[4] memory card = game.numberToCard(i);
             console2.log(card[0], card[1], card[2], card[3]);
@@ -39,9 +39,18 @@ contract QuestionMarkGameTest is Test {
     }
 
     function testNumberToCardToNumber(uint number) public view {
-        number = bound(number, 0, numCards-1);
+        number = bound(number, 0, NUM_CARDS-1);
         uint256[4] memory card = game.numberToCard(number);
         uint number2 = game.cardToNumber(card);
         assert(number == number2);
     }
+    
+    function testIsGuessCorrect() public pure {
+        uint[BOARD_WIDTH][BOARD_WIDTH] memory board = [[uint(5), 6, 10], [uint(1), 24, 23], [uint(7), 99, 100]];
+
+    }
+
+    // function printBoard(uint[BOARD_WIDTH][BOARD_WIDTH] memory board) {
+        // todo
+    // }
 }

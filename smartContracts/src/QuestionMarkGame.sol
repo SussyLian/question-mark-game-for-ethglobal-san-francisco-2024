@@ -7,10 +7,33 @@ import "forge-std/Test.sol";
 // a,b,c,d
 // 0000, 0130, 1022 , ...\
 
-uint256  constant numCards = 4 ** 4;
-// uint256  constant numCards = 5;
+uint256 constant NUM_CARDS = 4 ** 4;
+uint constant BOARD_WIDTH = 3;
+uint constant COLUMN = 0;
+uint constant ROW = 1;
+uint constant BOTTOM_LEFT = 0;
+uint constant BOTTOM_RIGHT = 1;
+uint constant TOP_RIGHT = 2;
+uint constant TOP_LEFT = 3;
 
 contract QuestionMarkGame {
+
+    mapping(uint => address) winnerPerBoard;
+    mapping(uint => mapping(address => uint[])) targetCardsGuessedPerBoardPerPlayer;
+    mapping(uint => mapping(address => mapping(uint => uint[2]))) guessPerBoardPerPlayerPerTargetCard;
+
+    function isGuessCorrect(uint[BOARD_WIDTH][BOARD_WIDTH] memory board, uint targetCard, uint[2] memory guessCoordinates) public pure returns (bool) {
+        require(0 < guessCoordinates[COLUMN]);
+        require(guessCoordinates[COLUMN] < 2*BOARD_WIDTH);
+        require(0 < guessCoordinates[ROW]);
+        require(guessCoordinates[ROW] < 2*BOARD_WIDTH);
+
+        if (guessCoordinates[COLUMN] % 2 == 1 && guessCoordinates[ROW] % 2 == 1) {
+            // exact card
+            uint boardCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2];
+            return targetCard == boardCard;
+        }
+    }
 
     // Maps the 4 values of the card to a single number (0 to 255)
     function cardToNumber(uint256[4] memory cardValues) public pure returns (uint256) {
@@ -34,7 +57,7 @@ contract QuestionMarkGame {
         return cardValues;
     }
     
-    function generatePermutation(uint256 N, uint256 seed) public pure returns (uint256[numCards] memory permutation) {
+    function generatePermutation(uint256 N, uint256 seed) public pure returns (uint256[NUM_CARDS] memory permutation) {
         for (uint256 i = 0; i < N; i++) {
             permutation[i] = i;
         }
