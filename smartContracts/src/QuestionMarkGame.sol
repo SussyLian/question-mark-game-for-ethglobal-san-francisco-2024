@@ -28,6 +28,8 @@ contract QuestionMarkGame {
         require(0 < guessCoordinates[ROW]);
         require(guessCoordinates[ROW] < 2*BOARD_WIDTH);
 
+        uint256[4] memory targetCardValues = numberToCard(targetCard);
+
         if (guessCoordinates[COLUMN] % 2 == 1 && guessCoordinates[ROW] % 2 == 1) {
             // exact card
             uint boardCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2];
@@ -35,20 +37,28 @@ contract QuestionMarkGame {
         } else if (guessCoordinates[COLUMN] % 2 == 0 && guessCoordinates[ROW] % 2 == 0) {
             // 4 cards
             uint bottomLeftCard = board[guessCoordinates[COLUMN] / 2 - 1][guessCoordinates[ROW] / 2 - 1];
+            uint256[4] memory bottomLeftCardValues = numberToCard(bottomLeftCard);
             uint bottomRightCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2 - 1];
+            uint256[4] memory bottomRightCardValues = numberToCard(bottomRightCard);
             uint topLeftCard = board[guessCoordinates[COLUMN] / 2 - 1][guessCoordinates[ROW] / 2];
+            uint256[4] memory topLeftCardValues = numberToCard(topLeftCard);
             uint topRightCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2];
-            return bottomLeftCard[TOP_RIGHT] == targetCard[BOTTOM_LEFT] && bottomRightCard[TOP_LEFT] == targetCard[BOTTOM_RIGHT] && topLeftCard[BOTTOM_RIGHT] == targetCard[TOP_LEFT] && topRightCard[BOTTOM_LEFT] == targetCard[TOP_RIGHT];
+            uint256[4] memory topRightCardValues = numberToCard(topRightCard);
+            return bottomLeftCardValues[TOP_RIGHT] == targetCardValues[BOTTOM_LEFT] && bottomRightCardValues[TOP_LEFT] == targetCardValues[BOTTOM_RIGHT] && topLeftCardValues[BOTTOM_RIGHT] == targetCardValues[TOP_LEFT] && topRightCardValues[BOTTOM_LEFT] == targetCardValues[TOP_RIGHT];
         } else if (guessCoordinates[COLUMN] % 2 == 1 && guessCoordinates[ROW] % 2 == 0) {
             // 2 cards
             uint bottomCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2 - 1];
+            uint256[4] memory bottomCardValues = numberToCard(bottomCard);
             uint topCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2];
-            return bottomCard[TOP_LEFT] == targetCard[BOTTOM_LEFT] && bottomCard[TOP_RIGHT] == targetCard[BOTTOM_RIGHT] && topCard[BOTTOM_LEFT] == targetCard[TOP_LEFT] && topCard[BOTTOM_RIGHT] == targetCard[TOP_RIGHT];
-        } else
+            uint256[4] memory topCardValues = numberToCard(topCard);
+            return bottomCardValues[TOP_LEFT] == targetCardValues[BOTTOM_LEFT] && bottomCardValues[TOP_RIGHT] == targetCardValues[BOTTOM_RIGHT] && topCardValues[BOTTOM_LEFT] == targetCardValues[TOP_LEFT] && topCardValues[BOTTOM_RIGHT] == targetCardValues[TOP_RIGHT];
+        } else {
             // 2 cards
             uint leftCard = board[guessCoordinates[COLUMN] / 2 - 1][guessCoordinates[ROW] / 2];
+            uint256[4] memory leftCardValues = numberToCard(leftCard);
             uint rightCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2];
-            return leftCard[BOTTOM_RIGHT] == targetCard[BOTTOM_LEFT] && rightCard[BOTTOM_LEFT] == targetCard[BOTTOM_RIGHT] && leftCard[TOP_RIGHT] == targetCard[TOP_LEFT] && rightCard[TOP_LEFT] == targetCard[TOP_RIGHT];
+            uint256[4] memory rightCardValues = numberToCard(rightCard);
+            return leftCardValues[BOTTOM_RIGHT] == targetCardValues[BOTTOM_LEFT] && rightCardValues[BOTTOM_LEFT] == targetCardValues[BOTTOM_RIGHT] && leftCardValues[TOP_RIGHT] == targetCardValues[TOP_LEFT] && rightCardValues[TOP_LEFT] == targetCardValues[TOP_RIGHT];
         }
     }
 
@@ -74,19 +84,18 @@ contract QuestionMarkGame {
         return cardValues;
     }
     
-    function generatePermutation(uint256 N, uint256 seed) public pure returns (uint256[NUM_CARDS] memory permutation) {
-        for (uint256 i = 0; i < N; i++) {
+    function generatePermutation(uint256 seed) public pure returns (uint256[NUM_CARDS] memory permutation) {
+        for (uint256 i = 0; i < NUM_CARDS; i++) {
             permutation[i] = i;
         }
-        for (uint256 i = N - 1; i > 0; i--) {
+        for (uint256 i = NUM_CARDS - 1; i > 0; i--) {
             uint256 j = random(seed, i + 1);
             (permutation[i], permutation[j]) = (permutation[j], permutation[i]);
             seed = uint256(keccak256(abi.encodePacked(seed, i)));
         }
-
     }
 
-    function random(uint256 seed, uint256 upperBound) internal pure returns (uint256) {
+    function random(uint256 seed, uint256 upperBound) private pure returns (uint256) {
         return uint256(keccak256(abi.encodePacked(seed))) % upperBound;
     }
 }

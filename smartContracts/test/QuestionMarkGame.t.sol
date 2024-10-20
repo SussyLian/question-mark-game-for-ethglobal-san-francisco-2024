@@ -13,14 +13,14 @@ contract QuestionMarkGameTest is Test {
 
     function testPrint() public view {
         uint256 seed = 3;
-        uint256[NUM_CARDS] memory permutation = game.generatePermutation(NUM_CARDS, seed);
+        uint256[NUM_CARDS] memory permutation = game.generatePermutation(seed);
         for (uint256 i = 0; i < NUM_CARDS; i++) {
             console2.log(permutation[i]);
         }
     }
 
     function testGeneratePermutation(uint256 seed) public view {
-        uint256[NUM_CARDS] memory permutation = game.generatePermutation(NUM_CARDS, seed);
+        uint256[NUM_CARDS] memory permutation = game.generatePermutation(seed);
         bool[NUM_CARDS] memory numberUsed;
         for (uint256 i = 0; i < NUM_CARDS; i++) {
             uint pi = permutation[i];
@@ -45,10 +45,10 @@ contract QuestionMarkGameTest is Test {
         assert(number == number2);
     }
     
-    function testIsGuessCorrect() public pure {
-        uint[BOARD_WIDTH][BOARD_WIDTH] memory board = [[uint(5), 6, 10], [uint(1), 24, 23], [uint(7), 99, 100]];
+    // function testIsGuessCorrect() public pure {
+    //     uint[BOARD_WIDTH][BOARD_WIDTH] memory board = [[uint(5), 6, 10], [uint(1), 24, 23], [uint(7), 99, 100]];
 
-    }
+    // }
 
     // function printBoard(uint[BOARD_WIDTH][BOARD_WIDTH] memory board) {
         // todo
