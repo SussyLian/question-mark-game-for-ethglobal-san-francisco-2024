@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import Card from '../../../../components/Card'; // Adjust path to Card component
 
 const PlayRoute = () => {
+  const zeroAddress = "0x0000000000000000000000000000000000000000";
+
   const params = useParams();
 
   // Extract seed and targetCard from the URL parameters
@@ -22,11 +24,19 @@ const PlayRoute = () => {
   });
 
   const { writeContractAsync: guessAsync } = useScaffoldWriteContract("QuestionMarkGame");
-  // const { writeContractAsync: guessAsync } = useScaffoldWriteContract({
-  //   contractName: "QuestionMarkGame",
-  //   functionName: "guess",
-  //   // args: [BigInt(0),BigInt(0),[BigInt(0),BigInt(0)]],
-  // });
+
+  const { data: numCorrect } = useScaffoldReadContract({
+    contractName: "QuestionMarkGame",
+    functionName: "viewNumCorrectPerBoardPerPlayer",
+    args: [seedNumber],
+  });
+
+  const { data: winnerAddress } = useScaffoldReadContract({
+    contractName: "QuestionMarkGame",
+    functionName: "winnerPerBoard",
+    args: [seedNumber],
+  });
+
 
   const [processedBoard, setProcessedBoard] = useState<number[][][]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -82,14 +92,11 @@ const PlayRoute = () => {
   const mapButtonIndexToCoordinates = (buttonIndex: number) => {
     // Implement logic to map buttonIndex to (x, y) coordinates
     // Return an array [x, y]
-    // console.log("mapButtonIndexToCoordinates, buttonIndex", buttonIndex);
+
     // Example implementation:
     const numCols = processedBoard[0].length;
-    // console.log("mapButtonIndexToCoordinates, numCols", numCols);
-    const x = buttonIndex % (2*numCols-1) + 1;
-    // console.log("mapButtonIndexToCoordinates, x", x);
-    const y = Math.floor(buttonIndex / (2*numCols - 1)) + 1;
-    // console.log("mapButtonIndexToCoordinates, y", y);
+    const x = buttonIndex % (2 * numCols - 1) + 1;
+    const y = Math.floor(buttonIndex / (2 * numCols - 1)) + 1;
 
     // Adjust y-coordinate to match bottom-left origin
     const adjustedY = processedBoard.length - 1 - y;
@@ -104,7 +111,6 @@ const PlayRoute = () => {
     }
 
     const [x, y] = mapButtonIndexToCoordinates(buttonIndex);
-    // const guessCoordinates = [x, y];
     const guessCoordinates: [bigint, bigint] = [BigInt(x), BigInt(y)];
 
     try {
@@ -224,6 +230,19 @@ const PlayRoute = () => {
             onClick={() => handleButtonClick(idx)}
           />
         ))}
+      </div>
+      <div className="right-panel">
+        <h2>Target Card</h2>
+        <Card digits={convertToBase4(Number(targetCardNumber))} />
+
+        <h2>Number of Correct Guesses</h2>
+        <p>{numCorrect !== undefined ? numCorrect.toString() : "Loading..."}</p>
+
+
+        <h2>Winner</h2>
+        <p>{winnerAddress && winnerAddress !== zeroAddress
+          ? `Winner: ${winnerAddress}`
+          : "No winner yet"}</p>
       </div>
     </div>
   );

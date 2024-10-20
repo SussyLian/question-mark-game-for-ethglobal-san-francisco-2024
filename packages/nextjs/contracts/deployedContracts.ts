@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     QuestionMarkGame: {
-      address: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+      address: "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
       abi: [
         {
           inputs: [
@@ -62,6 +62,68 @@ const deployedContracts = {
           name: "guess",
           outputs: [],
           stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          name: "numCorrectPerBoardPerPlayer",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "seed",
+              type: "uint256",
+            },
+          ],
+          name: "viewNumCorrectPerBoardPerPlayer",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "winnerPerBoard",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
           type: "function",
         },
       ],

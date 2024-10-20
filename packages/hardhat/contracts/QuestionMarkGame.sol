@@ -17,10 +17,17 @@ address constant ZERO_ADDRESS = address(0);
 
 contract QuestionMarkGame {
 
-    mapping(uint => address) winnerPerBoard;
+    mapping(uint => address) public winnerPerBoard;
     mapping(uint => mapping(uint => mapping(address => bool))) guessedPerBoardPerTargetCardPerPlayer;
-    mapping(uint => mapping(address => uint)) numCorrectPerBoardPerPlayer;
+    mapping(uint => mapping(address => uint)) public numCorrectPerBoardPerPlayer;
     
+    function viewNumCorrectPerBoardPerPlayer(uint seed) public view returns (uint) {
+        console.log('viewNumCorrectPerBoardPerPlayer, seed', seed);
+        console.log('viewNumCorrectPerBoardPerPlayer, msg.sender', msg.sender);
+        console.log('viewNumCorrectPerBoardPerPlayer, numCorrectPerBoardPerPlayer[seed][msg.sender]', numCorrectPerBoardPerPlayer[seed][msg.sender]);
+        return numCorrectPerBoardPerPlayer[seed][msg.sender]+1;
+    }
+
     function check(uint targetCard, uint[2] memory guessCoordinates) private pure {
         require(targetCard < NUM_CARDS);
         require(0 < guessCoordinates[COLUMN]);
