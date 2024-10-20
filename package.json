@@ -37,6 +37,8 @@
   },
   "packageManager": "yarn@3.2.3",
   "devDependencies": {
+    "@types/bn.js": "^5.1.6",
+    "abitype": "^1.0.6",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3"
   },

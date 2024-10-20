@@ -131,7 +131,8 @@ const PlayRoute = () => {
 
   const getButtonPositions = () => {
     // Calculate button positions based on the grid and return an array of positions
-    const positions = [];
+    // const positions = [];
+    const positions: { x: number; y: number }[] = [];
     const gridSize = 100; // Assuming each card is 100px x 100px
 
     processedBoard.forEach((row, rowIndex) => {
