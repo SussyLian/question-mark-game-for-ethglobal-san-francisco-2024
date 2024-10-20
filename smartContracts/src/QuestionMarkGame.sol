@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.28;
 
-import "forge-std/Test.sol";
+// import "forge-std/Test.sol";
 
 // 0,1,2,3
 // a,b,c,d
@@ -33,7 +33,7 @@ contract QuestionMarkGame {
     function guess(uint seed, uint targetCard, uint[2] memory guessCoordinates) public {
         if (guessedPerBoardPerTargetCardPerPlayer[seed][targetCard][msg.sender]) return;
         guessedPerBoardPerTargetCardPerPlayer[seed][targetCard][msg.sender] = true;
-        uint256[NUM_CARDS] memory board = generatePermutation(seed);
+        uint256[BOARD_WIDTH][BOARD_WIDTH] memory board = generatePermutation(seed);
         if (isGuessCorrect(board, targetCard, guessCoordinates)) numCorrectPerBoardPerPlayer[seed][msg.sender]++;
     }
 
@@ -99,7 +99,8 @@ contract QuestionMarkGame {
         return cardValues;
     }
     
-    function generatePermutation(uint256 seed) public pure returns (uint256[NUM_CARDS] memory permutation) {
+    function generatePermutation(uint256 seed) public pure returns (uint256[BOARD_WIDTH][BOARD_WIDTH] memory board) {
+        uint256[NUM_CARDS] memory permutation;
         for (uint256 i = 0; i < NUM_CARDS; i++) {
             permutation[i] = i;
         }
@@ -107,6 +108,11 @@ contract QuestionMarkGame {
             uint256 j = random(seed, i + 1);
             (permutation[i], permutation[j]) = (permutation[j], permutation[i]);
             seed = uint256(keccak256(abi.encodePacked(seed, i)));
+        }
+        for (uint256 i = 0; i < BOARD_WIDTH; i++) {
+            for (uint256 j = 0; j < BOARD_WIDTH; j++) {
+                board[i][j] = permutation[i*BOARD_WIDTH + j];
+            }
         }
     }
 

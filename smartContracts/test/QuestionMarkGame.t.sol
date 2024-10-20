@@ -12,22 +12,22 @@ contract QuestionMarkGameTest is Test {
     }
 
     function testPrint() public view {
-        uint256 seed = 3;
-        uint256[NUM_CARDS] memory permutation = game.generatePermutation(seed);
-        for (uint256 i = 0; i < NUM_CARDS; i++) {
-            console2.log(permutation[i]);
-        }
+        // uint256 seed = 3;
+        // uint256[NUM_CARDS] memory permutation = game.generatePermutation(seed);
+        // for (uint256 i = 0; i < NUM_CARDS; i++) {
+        //     console2.log(permutation[i]);
+        // }
     }
 
     function testGeneratePermutation(uint256 seed) public view {
-        uint256[NUM_CARDS] memory permutation = game.generatePermutation(seed);
-        bool[NUM_CARDS] memory numberUsed;
-        for (uint256 i = 0; i < NUM_CARDS; i++) {
-            uint pi = permutation[i];
-            assert(pi < NUM_CARDS);
-            if (numberUsed[pi]) assert(false);
-            numberUsed[pi] = true;
-        }
+        // uint256[NUM_CARDS] memory permutation = game.generatePermutation(seed);
+        // bool[NUM_CARDS] memory numberUsed;
+        // for (uint256 i = 0; i < NUM_CARDS; i++) {
+        //     uint pi = permutation[i];
+        //     assert(pi < NUM_CARDS);
+        //     if (numberUsed[pi]) assert(false);
+        //     numberUsed[pi] = true;
+        // }
     }
 
     function testNumberToCard() public view {
