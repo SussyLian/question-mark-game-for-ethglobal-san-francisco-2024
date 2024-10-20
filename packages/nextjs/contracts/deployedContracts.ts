@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     QuestionMarkGame: {
-      address: "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+      address: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
       abi: [
         {
           inputs: [
@@ -33,9 +33,9 @@ const deployedContracts = {
           name: "generatePermutation",
           outputs: [
             {
-              internalType: "uint256[3][3]",
+              internalType: "uint256[7][7]",
               name: "board",
-              type: "uint256[3][3]",
+              type: "uint256[7][7]",
             },
           ],
           stateMutability: "pure",
@@ -61,7 +61,7 @@ const deployedContracts = {
           ],
           name: "guess",
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "view",
           type: "function",
         },
         {

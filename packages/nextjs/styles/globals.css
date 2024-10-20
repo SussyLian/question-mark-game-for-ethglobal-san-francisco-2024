@@ -33,10 +33,12 @@ p {
 .board {
   display: flex;
   flex-direction: column-reverse; /* Ensures bottom-left starts at 0,0 */
+  grid-gap: 1px; /* Adds 10px gap between cards */
 }
 
 .board-row {
   display: flex;
+  grid-gap: 1px; /* Adds 10px gap between cards */
 }
 
 .card {

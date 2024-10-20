@@ -94,14 +94,18 @@ const PlayRoute = () => {
     // Return an array [x, y]
 
     // Example implementation:
+    console.log('mapButtonIndexToCoordinates, buttonIndex', buttonIndex);
     const numCols = processedBoard[0].length;
+    console.log('mapButtonIndexToCoordinates, numCols', numCols);
     const x = buttonIndex % (2 * numCols - 1) + 1;
+    console.log('mapButtonIndexToCoordinates, x', x);
     const y = Math.floor(buttonIndex / (2 * numCols - 1)) + 1;
+    console.log('mapButtonIndexToCoordinates, y', y);
 
     // Adjust y-coordinate to match bottom-left origin
-    const adjustedY = processedBoard.length - 1 - y;
+    // const adjustedY = processedBoard.length - 1 - y;
 
-    return [x, adjustedY];
+    return [x, y];
   };
 
   const handleButtonClick = async (buttonIndex: number) => {
