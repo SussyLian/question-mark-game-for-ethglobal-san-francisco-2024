@@ -7,7 +7,8 @@ import "forge-std/Test.sol";
 // a,b,c,d
 // 0000, 0130, 1022 , ...\
 
-uint256 constant NUM_CARDS = 4 ** 4;
+uint constant WIN_THRESHOLD = 10;
+uint constant NUM_CARDS = 4 ** 4;
 uint constant BOARD_WIDTH = 3;
 uint constant COLUMN = 0;
 uint constant ROW = 1;
@@ -15,12 +16,26 @@ uint constant BOTTOM_LEFT = 0;
 uint constant BOTTOM_RIGHT = 1;
 uint constant TOP_RIGHT = 2;
 uint constant TOP_LEFT = 3;
+address constant ZERO_ADDRESS = address(0);
 
 contract QuestionMarkGame {
 
     mapping(uint => address) winnerPerBoard;
-    mapping(uint => mapping(address => uint[])) targetCardsGuessedPerBoardPerPlayer;
-    mapping(uint => mapping(address => mapping(uint => uint[2]))) guessPerBoardPerPlayerPerTargetCard;
+    mapping(uint => mapping(uint => mapping(address => bool))) guessedPerBoardPerTargetCardPerPlayer;
+    mapping(uint => mapping(address => uint)) numCorrectPerBoardPerPlayer;
+    
+    function claimWin(uint seed) public {
+        if (winnerPerBoard[seed] == ZERO_ADDRESS) return;
+        if (numCorrectPerBoardPerPlayer[seed][msg.sender] < WIN_THRESHOLD) return;
+        winnerPerBoard[seed] = msg.sender;
+    }
+
+    function guess(uint seed, uint targetCard, uint[2] memory guessCoordinates) public {
+        if (guessedPerBoardPerTargetCardPerPlayer[seed][targetCard][msg.sender]) return;
+        guessedPerBoardPerTargetCardPerPlayer[seed][targetCard][msg.sender] = true;
+        uint256[NUM_CARDS] memory board = generatePermutation(seed);
+        if (isGuessCorrect(board, targetCard, guessCoordinates)) numCorrectPerBoardPerPlayer[seed][msg.sender]++;
+    }
 
     function isGuessCorrect(uint[BOARD_WIDTH][BOARD_WIDTH] memory board, uint targetCard, uint[2] memory guessCoordinates) public pure returns (bool) {
         require(0 < guessCoordinates[COLUMN]);
