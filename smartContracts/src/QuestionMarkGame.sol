@@ -32,6 +32,23 @@ contract QuestionMarkGame {
             // exact card
             uint boardCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2];
             return targetCard == boardCard;
+        } else if (guessCoordinates[COLUMN] % 2 == 0 && guessCoordinates[ROW] % 2 == 0) {
+            // 4 cards
+            uint bottomLeftCard = board[guessCoordinates[COLUMN] / 2 - 1][guessCoordinates[ROW] / 2 - 1];
+            uint bottomRightCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2 - 1];
+            uint topLeftCard = board[guessCoordinates[COLUMN] / 2 - 1][guessCoordinates[ROW] / 2];
+            uint topRightCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2];
+            return bottomLeftCard[TOP_RIGHT] == targetCard[BOTTOM_LEFT] && bottomRightCard[TOP_LEFT] == targetCard[BOTTOM_RIGHT] && topLeftCard[BOTTOM_RIGHT] == targetCard[TOP_LEFT] && topRightCard[BOTTOM_LEFT] == targetCard[TOP_RIGHT];
+        } else if (guessCoordinates[COLUMN] % 2 == 1 && guessCoordinates[ROW] % 2 == 0) {
+            // 2 cards
+            uint bottomCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2 - 1];
+            uint topCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2];
+            return bottomCard[TOP_LEFT] == targetCard[BOTTOM_LEFT] && bottomCard[TOP_RIGHT] == targetCard[BOTTOM_RIGHT] && topCard[BOTTOM_LEFT] == targetCard[TOP_LEFT] && topCard[BOTTOM_RIGHT] == targetCard[TOP_RIGHT];
+        } else
+            // 2 cards
+            uint leftCard = board[guessCoordinates[COLUMN] / 2 - 1][guessCoordinates[ROW] / 2];
+            uint rightCard = board[guessCoordinates[COLUMN] / 2][guessCoordinates[ROW] / 2];
+            return leftCard[BOTTOM_RIGHT] == targetCard[BOTTOM_LEFT] && rightCard[BOTTOM_LEFT] == targetCard[BOTTOM_RIGHT] && leftCard[TOP_RIGHT] == targetCard[TOP_LEFT] && rightCard[TOP_LEFT] == targetCard[TOP_RIGHT];
         }
     }
 
