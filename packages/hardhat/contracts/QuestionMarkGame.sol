@@ -36,15 +36,22 @@ contract QuestionMarkGame {
     }
 
     function guess(uint seed, uint targetCard, uint[2] memory guessCoordinates) public {
+        console.log('guess, seed', seed);
+        console.log('guess, targetCard', targetCard);
+        console.log('guess, guessCoordinates[0]', guessCoordinates[0]);
+        console.log('guess, guessCoordinates[1]', guessCoordinates[1]);
+        console.log('guess, numCorrectPerBoardPerPlayer[seed][msg.sender]', numCorrectPerBoardPerPlayer[seed][msg.sender]);
+        
         check(targetCard, guessCoordinates);
 
         if (guessedPerBoardPerTargetCardPerPlayer[seed][targetCard][msg.sender]) return;
+        console.log('guess, 2');
         guessedPerBoardPerTargetCardPerPlayer[seed][targetCard][msg.sender] = true;
         uint256[BOARD_WIDTH][BOARD_WIDTH] memory board = generatePermutation(seed);
         if (isGuessCorrect(board, targetCard, guessCoordinates)) numCorrectPerBoardPerPlayer[seed][msg.sender]++;
     }
 
-    function isGuessCorrect(uint[BOARD_WIDTH][BOARD_WIDTH] memory board, uint targetCard, uint[2] memory guessCoordinates) public pure returns (bool) {
+    function isGuessCorrect(uint[BOARD_WIDTH][BOARD_WIDTH] memory board, uint targetCard, uint[2] memory guessCoordinates) private pure returns (bool) {
         check(targetCard, guessCoordinates);
 
         uint256[4] memory targetCardValues = numberToCard(targetCard);
@@ -82,7 +89,7 @@ contract QuestionMarkGame {
     }
 
     // Maps the 4 values of the card to a single number (0 to 255)
-    function cardToNumber(uint256[4] memory cardValues) public pure returns (uint256) {
+    function cardToNumber(uint256[4] memory cardValues) private pure returns (uint256) {
         require(cardValues.length == 4, "Card must have exactly 4 values.");
         uint256 result = 0;
         for (uint256 i = 0; i < 4; i++) {
@@ -93,7 +100,7 @@ contract QuestionMarkGame {
     }
 
     // Maps a number (0 to 255) back to the 4 values of the card
-    function numberToCard(uint256 number) public pure returns (uint256[4] memory) {
+    function numberToCard(uint256 number) private pure returns (uint256[4] memory) {
         require(number < 256, "Number must be between 0 and 255.");
         uint256[4] memory cardValues;
         for (uint256 i = 0; i < 4; i++) {
