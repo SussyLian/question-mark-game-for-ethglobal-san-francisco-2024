@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+pragma solidity ^0.8.28;
 
 // Useful for debugging. Remove when deploying to a live network.
 import "hardhat/console.sol";
@@ -42,7 +42,7 @@ contract QuestionMarkGame {
         winnerPerBoard[seed] = msg.sender;
     }
 
-    function guess(uint seed, uint targetCard, uint[2] memory guessCoordinates) public view {
+    function guess(uint seed, uint targetCard, uint[2] memory guessCoordinates) public {
         console.log('guess, seed', seed);
         console.log('guess, targetCard', targetCard);
         console.log('guess, guessCoordinates[0]', guessCoordinates[0]);
@@ -53,12 +53,12 @@ contract QuestionMarkGame {
 console.log('guess, after check');
         if (guessedPerBoardPerTargetCardPerPlayer[seed][targetCard][msg.sender]) return;
         console.log('guess, not guessed yet');
-        // guessedPerBoardPerTargetCardPerPlayer[seed][targetCard][msg.sender] = true;
+        guessedPerBoardPerTargetCardPerPlayer[seed][targetCard][msg.sender] = true;
         uint256[BOARD_WIDTH][BOARD_WIDTH] memory board = generatePermutation(seed);
         if (isGuessCorrect(board, targetCard, guessCoordinates)) {
             console.log('guess, correct');
             console.log('guess, numCorrectPerBoardPerPlayer[seed][msg.sender]', numCorrectPerBoardPerPlayer[seed][msg.sender]);
-            // numCorrectPerBoardPerPlayer[seed][msg.sender]++;
+            numCorrectPerBoardPerPlayer[seed][msg.sender]++;
             console.log('guess, numCorrectPerBoardPerPlayer[seed][msg.sender]', numCorrectPerBoardPerPlayer[seed][msg.sender]);
         }
     }

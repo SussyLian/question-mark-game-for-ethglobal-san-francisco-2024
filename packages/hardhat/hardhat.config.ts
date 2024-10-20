@@ -22,7 +22,7 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.8.20",
+        version: "0.8.28",
         settings: {
           optimizer: {
             enabled: true,
@@ -34,7 +34,6 @@ const config: HardhatUserConfig = {
     ],
   },
   defaultNetwork: "localhost",
-  // defaultNetwork: "hardhat",
   namedAccounts: {
     deployer: {
       // By default, it will take the first Hardhat account as the deployer
@@ -49,6 +48,14 @@ const config: HardhatUserConfig = {
         url: forkingURL,
         enabled: process.env.MAINNET_FORKING_ENABLED === "true",
       },
+    },
+    skale: {
+      url: `https://testnet.skalenodes.com/v1/lanky-ill-funny-testnet`,
+      accounts: [deployerPrivateKey],
+    },
+    flow: {
+      url: `https://testnet.evm.nodes.onflow.org`,
+      accounts: [deployerPrivateKey],
     },
     mainnet: {
       url: `https://cloudflare-eth.com`,
