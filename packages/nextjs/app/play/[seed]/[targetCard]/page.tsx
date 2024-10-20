@@ -237,14 +237,14 @@ const PlayRoute = () => {
         ))}
       </div>
       <div className="right-panel">
-        <h2>Target Card</h2>
+        {/* <h2>Target Card</h2> */}
         <Card digits={convertToBase4(Number(targetCardNumber))} />
 
-        <h2>Number of Correct Guesses</h2>
+        {/* <h2>Number of Correct Guesses</h2> */}
         <p>{numCorrect !== undefined ? numCorrect.toString() : "Loading..."}</p>
 
 
-        <h2>Winner</h2>
+        {/* <h2>Winner</h2> */}
         <p>{winnerAddress && winnerAddress !== zeroAddress
           ? `Winner: ${winnerAddress}`
           : "No winner yet"}</p>

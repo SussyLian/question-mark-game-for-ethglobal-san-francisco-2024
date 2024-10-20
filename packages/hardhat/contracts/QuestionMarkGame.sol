@@ -29,11 +29,14 @@ contract QuestionMarkGame {
     }
 
     function check(uint targetCard, uint[2] memory guessCoordinates) private pure {
-        require(targetCard < NUM_CARDS);
-        require(0 < guessCoordinates[COLUMN]);
-        require(guessCoordinates[COLUMN] < 2*BOARD_WIDTH);
-        require(0 < guessCoordinates[ROW]);
-        require(guessCoordinates[ROW] < 2*BOARD_WIDTH);
+        console.log('check, targetCard', targetCard);
+        console.log('check, guessCoordinates[0]', guessCoordinates[0]);
+        console.log('check, guessCoordinates[1]', guessCoordinates[1]);
+        require(targetCard < NUM_CARDS, 'A');
+        require(0 < guessCoordinates[COLUMN], 'B');
+        require(guessCoordinates[COLUMN] < 2*BOARD_WIDTH, 'C');
+        require(0 < guessCoordinates[ROW], 'D');
+        require(guessCoordinates[ROW] < 2*BOARD_WIDTH, 'E');
     }
 
     function claimWin(uint seed) public {
@@ -43,6 +46,7 @@ contract QuestionMarkGame {
     }
 
     function guess(uint seed, uint targetCard, uint[2] memory guessCoordinates) public {
+        console.log('guess, msg.sender', msg.sender);
         console.log('guess, seed', seed);
         console.log('guess, targetCard', targetCard);
         console.log('guess, guessCoordinates[0]', guessCoordinates[0]);
@@ -50,7 +54,8 @@ contract QuestionMarkGame {
         console.log('guess, numCorrectPerBoardPerPlayer[seed][msg.sender]', numCorrectPerBoardPerPlayer[seed][msg.sender]);
         
         check(targetCard, guessCoordinates);
-console.log('guess, after check');
+        console.log('guess, after check');
+
         if (guessedPerBoardPerTargetCardPerPlayer[seed][targetCard][msg.sender]) return;
         console.log('guess, not guessed yet');
         guessedPerBoardPerTargetCardPerPlayer[seed][targetCard][msg.sender] = true;

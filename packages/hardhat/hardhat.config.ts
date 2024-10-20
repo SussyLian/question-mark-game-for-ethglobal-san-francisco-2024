@@ -12,7 +12,7 @@ import "hardhat-deploy-ethers";
 
 // If not set, it uses the hardhat account 0 private key.
 const deployerPrivateKey =
-  process.env.DEPLOYER_PRIVATE_KEY ?? "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+  process.env.DEPLOYER_PRIVATE_KEY ?? "0x9187d2040975cdff211330e057bf71b5cd84d0d5095fe75faaac3321d008ef35";
 // If not set, it uses ours Etherscan default API key.
 const etherscanApiKey = process.env.ETHERSCAN_API_KEY || "DNXJA8RX2Q3VZ4URQIWP7Z68CJXQZSC6AW";
 // forking rpc url
@@ -33,7 +33,8 @@ const config: HardhatUserConfig = {
       },
     ],
   },
-  defaultNetwork: "skale",
+  defaultNetwork: "localhost",
+  // defaultNetwork: "skale",
   namedAccounts: {
     deployer: {
       // By default, it will take the first Hardhat account as the deployer
